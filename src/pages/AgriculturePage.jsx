@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Spinner from '../components/Spinner';
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:4000";
+const API_URL = process.env.REACT_APP_API_URL || "https://ai-assistant-backend-3g6p.onrender.com";
 export default function AgriculturePage() {
   const [context, setContext] = useState('');
   const [answer, setAnswer] = useState('');
@@ -16,7 +16,7 @@ export default function AgriculturePage() {
   setLoading(true);
   setError('');
   try {
-    const response = await fetch(`${API_URL}/api/agriculture`, {
+    const response = await fetch(`${https://ai-assistant-backend-3g6p.onrender.com}/api/agriculture`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ context }),
