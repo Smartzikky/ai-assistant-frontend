@@ -16,7 +16,7 @@ export default function GeneralPage() {
   setLoading(true);
   setError('');
   try {
-    const response = await fetch(`${https://ai-assistant-backend-3g6p.onrender.com}/api/general`, {
+    const response = await fetch(`${API_URL}/api/general`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message }),
