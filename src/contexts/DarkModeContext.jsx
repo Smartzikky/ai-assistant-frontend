@@ -4,11 +4,19 @@ const DarkModeContext = createContext();
 
 export const DarkModeProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem('darkMode') === 'true';
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('darkMode') === 'true';
+    }
+    return false;
   });
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', darkMode);
+    const html = document.documentElement;
+    if (darkMode) {
+      html.classList.add('dark');
+    } else {
+      html.classList.remove('dark');
+    }
     localStorage.setItem('darkMode', darkMode);
   }, [darkMode]);
 
