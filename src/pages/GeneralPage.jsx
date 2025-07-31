@@ -59,7 +59,7 @@ export default function GeneralPage() {
             type="submit"
             className="w-full py-2 px-4 rounded bg-orange-500 hover:bg-orange-600 text-white transition"
           >
-            Ask AI
+            Ask Me
           </button>
         </form>
 
