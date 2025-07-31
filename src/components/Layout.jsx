@@ -9,12 +9,14 @@ export default function Layout() {
   const isHome = location.pathname === '/';
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 transition-colors">
       <Navbar />
       {isHome && <Hero />}
+      
       <main className="flex-grow px-4 py-8">
         <Outlet />
       </main>
+
       <Footer />
     </div>
   );
