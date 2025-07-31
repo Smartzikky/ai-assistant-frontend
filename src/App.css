@@ -1,3 +1,41 @@
+/* App.css - Tailwind CDN Safe (No @apply) */
+
+/* Add global transitions */
+body {
+  background-color: white;
+  color: #111827; /* Tailwind gray-900 */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark {
+  background-color: #111827; /* Tailwind gray-900 */
+  color: #f9fafb;             /* Tailwind gray-100 */
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.skeleton {
+  background-color: #e5e7eb;  /* gray-300 */
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+body.dark .skeleton {
+  background-color: #374151;  /* dark: gray-700 */
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* React logo fallback styles (optional) */
 .App {
   text-align: center;
 }

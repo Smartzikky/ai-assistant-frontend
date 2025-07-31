@@ -1,68 +1,72 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDarkMode } from '../contexts/DarkModeContext';
 import Spinner from '../components/Spinner';
-const API_URL = process.env.REACT_APP_API_URL || "http://https://ai-assistant-backend-3g6p.onrender.com";
+import toast from 'react-hot-toast';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+const API_URL = process.env.REACT_APP_API_URL || "https://ai-assistant-backend-3g6p.onrender.com";
+
 export default function FinancePage() {
-  const [budgetDetails, setBudgetDetails] = useState('');
+  const { darkMode } = useDarkMode();
+  const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+
+  useEffect(() => {
+    AOS.init({ duration: 600 });
+  }, []);
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!budgetDetails.trim()) {
-    setError('Please enter monthly income & expenditures before submitting.');
-    return;
-  }
-  setLoading(true);
-  setError('');
-  try {
-    const response = await fetch(`${https://ai-assistant-backend-3g6p.onrender.com}/api/finance`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ budgetDetails }),
-    });
-    if (!response.ok) {
-      throw new Error(`Server error: ${response.status}`);
+    e.preventDefault();
+    if (!question.trim()) {
+      toast.error('Please enter a finance-related query.');
+      return;
     }
-    const data = await response.json();
-    setAnswer(data.answer);
-  } catch (err) {
-    setError(err.message || 'Unexpected error occurred');
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/api/finance`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question }),
+      });
+      if (!res.ok) throw new Error('Server responded with an error');
+      const data = await res.json();
+      setAnswer(data.answer);
+      toast.success('Finance insight received!');
+    } catch (err) {
+      toast.error(err.message || 'Something went wrong.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-start p-4">
-      <div className="max-w-xl w-full">
-        <h2 className="text-3xl font-bold text-primary mb-6 text-center">
-          Finance Planner
+  return (
+    <div className={`min-h-screen px-4 py-8 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
+      <div className="max-w-2xl mx-auto space-y-6">
+        <h2 className="text-3xl font-bold text-center" data-aos="fade-up">
+          Finance Advice Assistant
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" data-aos="fade-up">
           <textarea
-            className="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="Monthly incom, expenses, goals..."
-            value={budgetDetails}
-            onChange={(e) => setBudgetDetails(e.target.value)}
+            className={`w-full p-3 rounded border focus:outline-none focus:ring-2 ${darkMode ? 'bg-gray-800 text-white border-gray-600 focus:ring-yellow-300' : 'bg-white border-gray-300 focus:ring-blue-500'}`}
+            placeholder="Ask your finance question (investments, budgeting, etc.)"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
             rows={4}
           />
           <button
             type="submit"
-            className="w-full bg-primary text-white py-2 rounded hover:bg-blue-700 transition"
+            className="w-full py-2 px-4 rounded bg-orange-500 hover:bg-orange-600 text-white transition"
           >
-            Get Plan
+            Get A Plan
           </button>
         </form>
 
         {loading && <Spinner />}
-        {error && (
-          <div className="mt-4 p-3 bg-red-100 text-red-700 rounded">
-            {error}
-          </div>
-        )}
+
         {answer && (
-          <div className="mt-4 p-4 bg-white shadow rounded">
+          <div className={`p-4 mt-4 rounded shadow ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-900'}`} data-aos="fade-in">
             <div dangerouslySetInnerHTML={{ __html: answer }} />
           </div>
         )}
@@ -70,5 +74,3 @@ return (
     </div>
   );
 }
-
-
