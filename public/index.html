@@ -5,16 +5,32 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>SMART AI Companion</title>
+
+    <!-- Load dark mode from localStorage BEFORE rendering -->
     <script>
       if (localStorage.getItem('darkMode') === 'true') {
         document.documentElement.classList.add('dark');
       }
     </script>
-    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+    <!-- Tailwind Config BEFORE the CDN script -->
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+      };
+    </script>
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- AOS Animation CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
   </head>
-  <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+
+  <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-500">
     <div id="root"></div>
+
+    <!-- AOS Animation JS -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   </body>
 </html>
