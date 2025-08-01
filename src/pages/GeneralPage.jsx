@@ -9,7 +9,7 @@ const API_URL = process.env.REACT_APP_API_URL || "https://ai-assistant-backend-3
 
 export default function GeneralPage() {
   const { darkMode } = useDarkMode();
-  const [query, setQuery] = useState('');
+  const [message, setMessage] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -19,8 +19,8 @@ export default function GeneralPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!query.trim()) {
-      toast.error('Please enter a general query.');
+    if (!message.trim()) {
+      toast.error('Please enter a general question.');
       return;
     }
     setLoading(true);
@@ -28,7 +28,7 @@ export default function GeneralPage() {
       const res = await fetch(`${API_URL}/api/general`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ message }),
       });
       if (!res.ok) throw new Error('Server responded with an error');
       const data = await res.json();
@@ -50,9 +50,9 @@ export default function GeneralPage() {
         <form onSubmit={handleSubmit} className="space-y-4" data-aos="fade-up">
           <textarea
             className={`w-full p-3 rounded border focus:outline-none focus:ring-2 ${darkMode ? 'bg-gray-800 text-white border-gray-600 focus:ring-yellow-300' : 'bg-white border-gray-300 focus:ring-blue-500'}`}
-            placeholder="Ask any general question..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Ask me anything..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             rows={4}
           />
           <button
